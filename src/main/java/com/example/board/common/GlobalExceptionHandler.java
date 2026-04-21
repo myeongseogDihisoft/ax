@@ -27,22 +27,22 @@ public class GlobalExceptionHandler {
         String message = e.getBindingResult().getFieldErrors().stream()
                 .map(fe -> fe.getField() + " " + fe.getDefaultMessage())
                 .collect(Collectors.joining(", "));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                message,
-                req.getRequestURI()));
+        return build(HttpStatus.BAD_REQUEST, message, req);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDuplicate(
             DataIntegrityViolationException e, HttpServletRequest req) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(
+        return build(HttpStatus.CONFLICT, "username already exists", req);
+    }
+
+    private static ResponseEntity<ErrorResponse> build(
+            HttpStatus status, String message, HttpServletRequest req) {
+        return ResponseEntity.status(status).body(new ErrorResponse(
                 LocalDateTime.now(),
-                HttpStatus.CONFLICT.value(),
-                HttpStatus.CONFLICT.getReasonPhrase(),
-                "username already exists",
+                status.value(),
+                status.getReasonPhrase(),
+                message,
                 req.getRequestURI()));
     }
 }
