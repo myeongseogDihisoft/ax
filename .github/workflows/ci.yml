@@ -31,6 +31,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Setup Chrome (for Playwright E2E)
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
       - name: Gradle build (compile + test)
         run: ./gradlew build --no-daemon
 
