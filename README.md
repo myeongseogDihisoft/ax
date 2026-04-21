@@ -229,6 +229,16 @@ sequenceDiagram
 #   JDBC URL: jdbc:h2:mem:boarddb
 ```
 
+### 7.1 테스트 실행
+
+```bash
+./gradlew test
+```
+
+MockMvc/단위 테스트와 Playwright 기반 E2E 테스트가 함께 실행됩니다.
+
+**E2E 전제조건**: 로컬에 **Google Chrome** 이 설치되어 있어야 합니다. Playwright 는 번들 Chromium 다운로드를 우회(`PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`) 하고 시스템 Chrome(`channel="chrome"`) 을 사용합니다. CI 에서는 `browser-actions/setup-chrome` 액션이 자동 설치합니다.
+
 ### 7.1 시나리오 테스트 (curl)
 
 ```bash
