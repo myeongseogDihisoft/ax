@@ -1,5 +1,8 @@
 # AX 게시판 (Spring Boot)
 
+[![CI](https://github.com/myeongseogDihisoft/ax/actions/workflows/ci.yml/badge.svg)](https://github.com/myeongseogDihisoft/ax/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/myeongseogDihisoft/ax/branch/main/graph/badge.svg)](https://codecov.io/gh/myeongseogDihisoft/ax)
+
 > 회원가입 · 로그인 · 게시글 CRUD를 제공하는 최소 기능 게시판 백엔드 스펙 문서
 
 본 문서는 **구현 이전 단계의 스펙 정의**입니다. 이 README만 보고도 동일한 결과물을 구현할 수 있도록 요구사항·도메인·API·정책을 일관된 형태로 기술합니다.
@@ -238,6 +241,22 @@ sequenceDiagram
 MockMvc/단위 테스트와 Playwright 기반 E2E 테스트가 함께 실행됩니다.
 
 **E2E 전제조건**: 로컬에 **Google Chrome** 이 설치되어 있어야 합니다. Playwright 는 번들 Chromium 다운로드를 우회(`PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`) 하고 시스템 Chrome(`channel="chrome"`) 을 사용합니다. CI 에서는 `browser-actions/setup-chrome` 액션이 자동 설치합니다.
+
+#### 커버리지 리포트
+
+`./gradlew test` 는 JaCoCo 리포트를 자동 생성합니다 (`finalizedBy(jacocoTestReport)`).
+
+```bash
+./gradlew test jacocoTestReport
+
+# XML (Codecov 업로드 용)
+build/reports/jacoco/test/jacocoTestReport.xml
+
+# HTML (브라우저 열람 용)
+open build/reports/jacoco/test/html/index.html
+```
+
+CI 에서는 `codecov/codecov-action@v5` 가 XML 리포트를 Codecov 로 업로드합니다. PR 마다 커버리지 변화 리포트가 자동 코멘트로 달립니다.
 
 ### 7.1 시나리오 테스트 (curl)
 
