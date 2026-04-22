@@ -1,5 +1,6 @@
 plugins {
 	java
+	jacoco
 	id("org.springframework.boot") version "3.5.13"
 	id("io.spring.dependency-management") version "1.1.7"
 }
@@ -33,7 +34,20 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+jacoco {
+	toolVersion = "0.8.11"
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 	environment("PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD", "1")
+	finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test)
+	reports {
+		xml.required.set(true)
+		html.required.set(true)
+	}
 }
